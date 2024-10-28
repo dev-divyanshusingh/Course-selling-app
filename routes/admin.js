@@ -69,15 +69,39 @@ adminRouter.post("/course", adminMiddleware, async function (req, res){
     })
     });
 
-adminRouter.put("/course", function (req, res){
-        res.json({
-            message:"admin to put course endpoints"
+adminRouter.put("/course", adminMiddleware, async function (req, res){
+    const adminId = req.userId;
+    
+    const { title, description, imageUrl, price, courseId} = req.body;
+    //Creating a web3 saas in 6hrs
+    const course= await courseModel.updateOne({
+    _id: courseId,
+    creatorId: adminId 
+    },{
+        title: title,
+        description: description,
+        imageUrl: imageUrl,
+        price: price, 
+        creatorId : adminId,
+    });
+    
+    res.json({
+            message:"course Updated",
+            courseId: course._id
     })
     });
 
-adminRouter.get("/course/bulk", function (req, res){
-        res.json({
-            message:"admin course bulk endpoints"
+adminRouter.get("/course/bulk",adminMiddleware, async function (req, res){
+    const adminId = req.userId;
+    
+    const { title, description, imageUrl, price, courseId} = req.body;
+    const courses = await courseModel.find({
+    _id: courseId,
+    creatorId: adminId 
+    });
+    res.json({
+        message: "Here all your courses",
+        courseId: course._Id
     })
     }); 
 
