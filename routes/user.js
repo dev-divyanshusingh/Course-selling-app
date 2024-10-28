@@ -2,7 +2,8 @@ const{ Router } = require("express");
 const userRouter = Router();
 const { userModel } = require("../db");
 const jwt = require("jsonwebtoken");
-const JWT_USER_PASSWORD = "dkjihaiuser123";
+const {  JWT_USER_PASSWORD } = require("../config.js");
+
 
    //rather than now exporting a function now we will export express router
 userRouter.get("/signup", async function (req, res){

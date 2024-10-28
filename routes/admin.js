@@ -1,8 +1,9 @@
 const { Router } = require("express");
 const adminRouter = Router();
-const{ adminModel } = require("../db")
+const{ adminModel, courseModel } = require("../db")
 const jwt = require("jsonwebtoken");
-const JWT_ADMIN_PASSWORD =  "adminwlasecrethai";
+const { JWT_ADMIN_PASSWORD } = require("../config");
+const { adminMiddleware } = require("../middleware/admin");
 //bcrypt for password hashing, zod for verifying user input , jsonwebtokens for tokenising  
 
 adminRouter.post("/signup", async  function (req, res){
@@ -49,9 +50,22 @@ adminRouter.post("/signin", async function (req, res){
     }
     });
   //endpoint: /api/v1/course/
-adminRouter.post("/course", function (req, res){
-        res.json({
-            message:"admin course endpoints"
+adminRouter.post("/course", adminMiddleware, async function (req, res){
+    const adminId = req.userId;
+    
+    const { title, description, imageUrl, price } = req.body;
+    //Creating a web3 saas in 6hrs
+    const course= await courseModel.create({
+        title: title,
+        description: description,
+        imageUrl: imageUrl,
+        price: price, 
+        creatorId : adminId,
+    });
+    
+    res.json({
+            message:"message  course created",
+            courseId: course._id
     })
     });
 

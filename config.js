@@ -2,8 +2,8 @@
 //config file and we will export all needed things from here and will import in
 //needed file
 
-const JWT_USER_PASSWORD = "dkjihaiuser123";
-const JWT_ADMIN_PASSWORD =  "adminwlasecrethai";
+const JWT_USER_PASSWORD = process.env.JWT_USER_PASSWORD;
+const JWT_ADMIN_PASSWORD =  process.env.JWT_ADMIN_PASSWORD;
 
 
 module.exports = {
